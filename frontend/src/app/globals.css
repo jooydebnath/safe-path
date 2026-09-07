@@ -1,0 +1,205 @@
+@import "tailwindcss";
+
+/* ============================================================
+   SafePath Design System — dark, bold, high-contrast safety UI.
+   Single source of truth for color/spacing/motion tokens. Every
+   page/component should read these tokens (via Tailwind's
+   `@theme inline` mapping below) rather than hardcoding hex
+   values, so the whole app stays visually consistent.
+   ============================================================ */
+
+:root {
+  /* Surfaces — layered dark slate, not pure black, so cards/sheets
+     read as elevated rather than flat cutouts. */
+  --background: #0b0e14;
+  --surface: #12161f;
+  --surface-raised: #1a2030;
+  --surface-hover: #212840;
+  --border: #262e42;
+  --border-strong: #384060;
+
+  /* Text */
+  --foreground: #f3f5fa;
+  --muted: #8b93ab;
+  --muted-strong: #b4bcd4;
+
+  /* Brand / safety accent — rose reads as "alert-ready" without
+     being alarmist at rest. */
+  --primary: #fb3a5d;
+  --primary-strong: #e11d48;
+  --primary-soft: #3a1526;
+  --primary-glow: rgba(251, 58, 93, 0.35);
+
+  /* Status */
+  --safe: #34d399;
+  --safe-soft: #0f2a22;
+  --warning: #fbbf24;
+  --warning-soft: #2e2410;
+  --danger: #f87171;
+  --danger-soft: #341417;
+  --info: #60a5fa;
+  --info-soft: #142238;
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
+  --color-surface-hover: var(--surface-hover);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-muted-strong: var(--muted-strong);
+  --color-primary: var(--primary);
+  --color-primary-strong: var(--primary-strong);
+  --color-primary-soft: var(--primary-soft);
+  --color-safe: var(--safe);
+  --color-safe-soft: var(--safe-soft);
+  --color-warning: var(--warning);
+  --color-warning-soft: var(--warning-soft);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+  --color-info: var(--info);
+  --color-info-soft: var(--info-soft);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+* {
+  border-color: var(--border);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Mobile-only container for normal user app */
+.mobile-container {
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  min-height: 100vh;
+  position: relative;
+  background: var(--background);
+  box-shadow: 0 0 60px rgba(0, 0, 0, 0.45);
+  overflow-x: hidden;
+}
+
+html, body {
+  overflow-x: hidden;
+}
+
+/* ---------- Reusable primitives ---------- */
+
+/* Frosted, elevated card used throughout for panels/list rows. */
+.sp-card {
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  border: 1px solid var(--border);
+  border-radius: 1.25rem;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+/* Subtle grain/glow behind hero sections for depth without imagery. */
+.sp-glow {
+  position: relative;
+  isolation: isolate;
+}
+.sp-glow::before {
+  content: "";
+  position: absolute;
+  inset: -20% -20% auto -20%;
+  height: 60%;
+  background: radial-gradient(60% 60% at 50% 0%, var(--primary-glow), transparent 70%);
+  z-index: -1;
+  pointer-events: none;
+}
+
+.sp-gradient-primary {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-strong) 100%);
+}
+
+/* SOS Pulse Animation */
+@keyframes pulse-ring {
+  0% { transform: scale(1); opacity: 0.7; }
+  100% { transform: scale(2.6); opacity: 0; }
+}
+
+.sos-pulse {
+  animation: pulse-ring 1.6s var(--ease-out) infinite;
+}
+
+@keyframes soft-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.55; }
+}
+.sp-live-dot {
+  animation: soft-pulse 2s ease-in-out infinite;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 3px;
+}
+
+/* Hide scrollbar utility */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Slide up animation for modal */
+@keyframes slide-up {
+  from { transform: translateY(100%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.animate-slide-up {
+  animation: slide-up 0.35s var(--ease-out) forwards;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in {
+  animation: fade-in 0.4s var(--ease-out) forwards;
+}
+
+/* Leaflet dark-map tweak: default tile controls/popups are styled for a
+   light page, so re-skin them to match the app's dark chrome. */
+.leaflet-container {
+  background: var(--surface);
+}
+.leaflet-popup-content-wrapper,
+.leaflet-popup-tip {
+  background: var(--surface-raised);
+  color: var(--foreground);
+}
+.leaflet-control-attribution {
+  background: color-mix(in srgb, var(--surface) 80%, transparent) !important;
+  color: var(--muted) !important;
+}
+.leaflet-control-attribution a {
+  color: var(--muted-strong) !important;
+}

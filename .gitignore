@@ -1,12 +1,20 @@
 # dependencies
-/node_modules
+node_modules/
+**/node_modules/
 
 # next.js
-/.next/
+.next/
+**/.next/
 /out/
 
 # production
 /build
+
+# python
+venv/
+**/venv/
+__pycache__/
+*.pyc
 
 # misc
 .DS_Store
@@ -19,7 +27,16 @@ yarn-error.log*
 
 # env files
 .env*.local
+.env
+**/.env
 
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# local database
+db.sqlite3
+**/db.sqlite3
+
+# agent worktrees
+.claude/
